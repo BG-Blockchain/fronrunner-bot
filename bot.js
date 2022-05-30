@@ -43,6 +43,7 @@ function router(account) {
           'function swapExactTokensForTokensSupportingFeeOnTransferTokens(uint amountIn, uint amountOutMin, address[] calldata path, address to, uint deadline) external returns (uint[] memory amounts)',
           'function swapExactETHForTokensSupportingFeeOnTransferTokens(uint amountOutMin, address[] calldata path, address to, uint deadline) external payable',
           'function swapExactTokensForETH (uint amountOutMin, address[] calldata path, address to, uint deadline) external payable',
+          'function swapETHForExactTokens(uint amountOut, address[] calldata path, address to, uint deadline) external payable returns (uint[] memory amounts)'
       ],
       account
   );
@@ -89,7 +90,7 @@ const buyToken = async(account,tokenContract,gasLimit,gasPrice)=>{
     const amounts = await router(account).getAmountsOut(amountIn, [BNB_CONTRACT, tokenContract]);
     amountOutMin = amounts[1].sub(amounts[1].div(100).mul(`${slippage}`));
   }
-  const tx = await router(account).swapExactETHForTokensSupportingFeeOnTransferTokens(
+  const tx = await router(account).swapETHForExactTokens(
     amountOutMin,
     [BNB_CONTRACT, tokenContract],
     account.address,
@@ -187,7 +188,7 @@ customWsProvider.on("pending", (tx) => {
       }
       if(result.length>0){
         let tokenAddress = ""
-        if(result[1].length>0 && blocker===false){
+        if(result[1].length>0){
           tokenAddress = result[1][1]
           console.log("tokenAddress",tokenAddress);
           if (whitelist.includes(tokenAddress)){
