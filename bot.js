@@ -13,7 +13,7 @@ const buyAmount = config.bnb_amount_to_buy
 const slippage_buy = config.slippage_buy
 const slippage_sell = config.slippage_sell
 const whale_amount = config.whale_amount
-
+const gasLimit = config.gas_limit
 
 var wss = config.node_uri;
 
@@ -76,7 +76,7 @@ function erc20(account,tokenAddress) {
 }
 
 blocker = false
-const buyToken = async(account,tokenContract,gasLimit,gasPrice)=>{
+const buyToken = async(account,tokenContract,gasPrice)=>{
   //buyAmount how much are we going to pay for example 0.1 BNB
   //const buyAmount = 0.001
 
