@@ -14,6 +14,7 @@ const slippage_buy = config.slippage_buy
 const slippage_sell = config.slippage_sell
 const whale_amount = config.whale_amount
 const gasLimit = config.gas_limit
+const addedGasValue = config.added_gas_value
 
 var wss = config.node_uri;
 
@@ -29,7 +30,7 @@ const abi = [{"inputs":[{"internalType":"address","name":"_factory","type":"addr
 
 function calculate_gas_price(action, amount){
   if (action==="buy"){
-    return amount.add(1)
+    return amount.add(addedGasValue)
   }else{
     return amount
   }
