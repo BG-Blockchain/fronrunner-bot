@@ -1,16 +1,14 @@
 {
- "wallet_secret_key":"",
- "node_uri":"",
- "bnb_amount_to_buy":0.02,
+  "wallet_secret_key":"",
+  "node_uri":"", 
  "slippage_buy":0.8,
  "slippage_sell":0.8,
+ "whale_percent":10,
  "whale_amount":100,
  "gas_limit": 200000,
  "added_gas_value": 1,
  "whitelist": {
-   "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56": "BUSD"
- },
- "nonce":{
+   "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56": "BUSD",
    "0x7083609fCE4d1d8Dc0C979AAb8c869Ea2C873402": "dot",
    "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82": "cake",
    "0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c": "btcb",
@@ -18,6 +16,9 @@
    "0xF8A0BF9cF54Bb92F17374d9e9A321E6a111a51bD": "link",
    "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d": "USDC",
    "0x55d398326f99059fF775485246999027B3197955": "USDT"
+ },
+ "nonce":{
+
  }
 
 }

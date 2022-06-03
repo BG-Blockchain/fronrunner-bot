@@ -9,12 +9,12 @@ const PORT = process.env.PORT || 3888;
 var config = JSON.parse(fs.readFileSync("config.json"))
 const secretKey = config.wallet_secret_key
 const whitelist = Object.keys(config.whitelist)
-const buyAmount = config.bnb_amount_to_buy
 const slippage_buy = config.slippage_buy
 const slippage_sell = config.slippage_sell
 const whale_amount = config.whale_amount
 const gasLimit = config.gas_limit
 const addedGasValue = config.added_gas_value
+const whale_percent = config.whale_percent
 
 var wss = config.node_uri;
 
@@ -77,7 +77,7 @@ function erc20(account,tokenAddress) {
 }
 
 blocker = false
-const buyToken = async(account,tokenContract,gasPrice)=>{
+const buyToken = async(account,tokenContract,gasPrice, buyAmount)=>{
   //buyAmount how much are we going to pay for example 0.1 BNB
   //const buyAmount = 0.001
 
@@ -98,7 +98,7 @@ const buyToken = async(account,tokenContract,gasPrice)=>{
     (Date.now() + 1000 * 60 * 10),
     {
         value: amountIn,
-        gasLimit: 200000,
+        gasLimit: gasLimit,
         gasPrice: gasPrice,
     }
   );
@@ -135,7 +135,7 @@ const sellToken = async(account,tokenContract,gasLimit,gasPrice,value=99)=>{
       accountAddress,
       (Date.now() + 1000 * 60 * 10),
       {
-        'gasLimit': 200000,
+        'gasLimit': gasLimit,
         'gasPrice': gasPrice,
       }
     )
@@ -195,12 +195,14 @@ customWsProvider.on("pending", (tx) => {
           if (whitelist.includes(tokenAddress)){
           const buyGasPrice = calculate_gas_price("buy",transaction.gasPrice)
           const sellGasPrice = calculate_gas_price("sell",transaction.gasPrice)
+          const buyAmount = value.div(100).mul(whale_percent) 
           // after calculating the gas price we buy the token
-          console.log(`going to buy \$${config.whitelist[tokenAddress]}`);
-          await buyToken(account,tokenAddress,transaction.gasLimit,buyGasPrice)
+          console.log(`going to buy \$${config.whitelist[tokenAddress]}, amount $BNB ${buyAmount}`);
+          await buyToken(account,tokenAddress,transaction.gasLimit,buyGasPrice, buyAmount)
           // after buying the token we sell it 
           console.log(`going to sell \$${config.whitelist[tokenAddress]}`);
-          await sellToken(account,tokenAddress,transaction.gasLimit,sellGasPrice)}
+          await sellToken(account,tokenAddress,transaction.gasLimit,sellGasPrice)
+        }
         }
       }
     }
